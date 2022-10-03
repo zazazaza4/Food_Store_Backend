@@ -40,28 +40,28 @@ router.get(
   asyncHandler(async (req, res) => {
     const tags = await FoodModel.aggregate([
       {
-        $unwind: '$tags',
+        $unwind: '$tags'
       },
       {
         $group: {
           _id: '$tags',
           count: {
-            $sum: 1,
-          },
-        },
+            $sum: 1
+          }
+        }
       },
       {
         $project: {
           _id: 0,
           name: '$_id',
-          count: '$count',
-        },
-      },
+          count: '$count'
+        }
+      }
     ]).sort({ count: -1 });
 
     const all = {
       name: 'All',
-      count: await FoodModel.countDocuments(),
+      count: await FoodModel.countDocuments()
     };
 
     tags.unshift(all);
